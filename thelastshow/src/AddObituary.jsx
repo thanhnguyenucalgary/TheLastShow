@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import "./App.css";
 
 export default function AddObituary({ user, setObituaries, onClose }) {
-  const [userEmail, setUserEmail] = useState(user?.email || user?.name || "");
   const [name, setName] = useState("");
   const [date, setDate] = useState("");
   const [story, setStory] = useState("");
