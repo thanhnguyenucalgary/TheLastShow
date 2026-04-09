@@ -1,12 +1,16 @@
 import React, { useState } from "react";
 import "./App.css";
 
+const API_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL || "http://35.183.24.39:30791";
+
 export default function AddObituary({ user, setObituaries, onClose }) {
   const [name, setName] = useState("");
-  const [date, setDate] = useState("");
-  const [story, setStory] = useState("");
+  const [bornYear, setBornYear] = useState("");
+  const [diedYear, setDiedYear] = useState("");
   const [image, setImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   function handleImageChange(e) {
     const file = e.target.files[0];
@@ -21,19 +25,46 @@ export default function AddObituary({ user, setObituaries, onClose }) {
     }
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
-    setObituaries((prev) => [
-      ...prev,
-      {
-        name,
-        date,
-        story,
-        image: imagePreview,
-        createdBy: user?.email || user?.name || "",
-      },
-    ]);
-    onClose();
+    if (!image) {
+      alert("Please select an image before submitting.");
+      return;
+    }
+
+    const createdBy = user?.email || user?.name || "";
+    if (!createdBy) {
+      alert("Please log in before creating an obituary.");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("born_year", bornYear);
+    formData.append("died_year", diedYear);
+    formData.append("image", image);
+    formData.append("email", createdBy);
+
+    try {
+      setIsSubmitting(true);
+      const response = await fetch(`${API_BASE_URL}/create-obituary`, {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(errorText || "Failed to add obituary");
+      }
+
+      const data = await response.json();
+      setObituaries((prev) => [...prev, data]);
+      onClose();
+    } catch (err) {
+      alert("Error: " + err.message);
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   return (
@@ -84,24 +115,31 @@ export default function AddObituary({ user, setObituaries, onClose }) {
             />
           </label>
           <label>
-            Date:
+            Born Year:
             <input
-              type="date"
-              value={date}
-              onChange={(e) => setDate(e.target.value)}
+              type="number"
+              value={bornYear}
+              onChange={(e) => setBornYear(e.target.value)}
               required
+              min="1800"
+              max={new Date().getFullYear()}
             />
           </label>
           <label>
-            Story:
-            <textarea
-              value={story}
-              onChange={(e) => setStory(e.target.value)}
+            Died Year:
+            <input
+              type="number"
+              value={diedYear}
+              onChange={(e) => setDiedYear(e.target.value)}
               required
+              min="1800"
+              max={new Date().getFullYear()}
             />
           </label>
           <div style={{ display: "flex", gap: 8, marginTop: 16 }}>
-            <button type="submit">Add</button>
+            <button type="submit" disabled={isSubmitting}>
+              {isSubmitting ? "Adding..." : "Add"}
+            </button>
             <button type="button" onClick={onClose}>
               Cancel
             </button>
