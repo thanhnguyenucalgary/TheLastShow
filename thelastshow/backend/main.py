@@ -19,7 +19,8 @@ app.add_middleware(
 )
 
 # AWS Clients (K3s will use the EC2 IAM Role automatically)
-polly = boto3.client('polly', region_name='ca-west-1')
+# Polly is not available in ca-west-1, so use a supported region.
+polly = boto3.client('polly', region_name='ca-central-1')
 dynamodb = boto3.resource('dynamodb', region_name='ca-west-1')
 table = dynamodb.Table('obituaries-thanh-nguyen')
 ssm = boto3.client('ssm', region_name='ca-west-1')

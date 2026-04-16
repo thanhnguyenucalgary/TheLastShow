@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./App.css";
 
 const API_BASE_URL =
-  import.meta.env.VITE_API_BASE_URL || "http://35.183.24.39:30791";
+  import.meta.env.VITE_API_BASE_URL || "http://56.112.10.18:8000";
 
 export default function AddObituary({ user, setObituaries, onClose }) {
   const [name, setName] = useState("");
