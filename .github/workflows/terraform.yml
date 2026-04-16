@@ -22,8 +22,6 @@ jobs:
       AWS_REGION: ${{ secrets.AWS_REGION }}
       TF_IN_AUTOMATION: "true"
       TF_INPUT: "false"
-      TF_VAR_cloudinary_url: ${{ secrets.CLOUDINARY_URL }}
-      TF_VAR_google_api_key: ${{ secrets.GOOGLE_API_KEY }}
 
     steps:
       - name: Checkout

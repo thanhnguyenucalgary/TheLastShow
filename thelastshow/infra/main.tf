@@ -93,7 +93,7 @@ resource "aws_dynamodb_table" "obituaries" {
 resource "aws_ssm_parameter" "cloudinary_url" {
   name  = "/last-show/cloudinary_url"
   type  = "SecureString"
-  value = var.cloudinary_url
+  value = "PlaceholderValue" # Set a dummy value here, real value will be injected via GitHub Actions
 
   lifecycle {
     ignore_changes = [value]
@@ -103,7 +103,7 @@ resource "aws_ssm_parameter" "cloudinary_url" {
 resource "aws_ssm_parameter" "google_api_key" {
   name  = "/last-show/google_api_key"
   type  = "SecureString"
-  value = var.google_api_key
+  value = "PlaceholderValue" # Set a dummy value here, real value will be injected via GitHub Actions
 
   lifecycle {
     ignore_changes = [value]
@@ -143,7 +143,7 @@ resource "aws_iam_policy" "last_show_permissions" {
       {
         Effect   = "Allow"
         Action   = ["ssm:GetParameter"]
-        Resource = "arn:aws:ssm:ca-central-1:*:parameter/last-show/*"
+        Resource = "arn:aws:ssm:ca-west-1:*:parameter/last-show/*"
       }
     ]
   })

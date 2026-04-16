@@ -19,10 +19,10 @@ app.add_middleware(
 )
 
 # AWS Clients (K3s will use the EC2 IAM Role automatically)
-polly = boto3.client('polly', region_name='ca-central-1')
-dynamodb = boto3.resource('dynamodb', region_name='ca-central-1')
+polly = boto3.client('polly', region_name='ca-west-1')
+dynamodb = boto3.resource('dynamodb', region_name='ca-west-1')
 table = dynamodb.Table('obituaries-thanh-nguyen')
-ssm = boto3.client('ssm', region_name='ca-central-1')
+ssm = boto3.client('ssm', region_name='ca-west-1')
 
 
 # Only return obituaries for the given user (created_by)
