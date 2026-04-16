@@ -9,7 +9,7 @@ terraform {
 }
 
 provider "aws" {
-  region = "ca-central-1"
+  region = "ca-west-1"
   # Note: Terraform will automatically use the Admin profile you 
   # set up via 'aws configure'. No keys needed here!
 }
