@@ -10,16 +10,16 @@ terraform {
 
 provider "aws" {
   region = "ca-west-1"
-  # Note: Terraform will automatically use the Admin profile you 
+  # Note: Terraform will automatically use the Admin profile you
   # set up via 'aws configure'. No keys needed here!
 }
 
 resource "aws_instance" "k3s_node" {
-  ami           = "ami-0280dd9806102a97b" 
+  ami           = "ami-0280dd9806102a97b"
   instance_type = "t3.small"
-  
+
   instance_market_options {
-    market_type = "spot" 
+    market_type = "spot"
   }
 
   user_data = <<-EOF
@@ -29,7 +29,7 @@ resource "aws_instance" "k3s_node" {
 
   iam_instance_profile   = aws_iam_instance_profile.last_show_profile.name
   vpc_security_group_ids = [aws_security_group.last_show_sg.id]
-  key_name              = "the-last-show" # Make sure to create this key pair in AWS Console
+  key_name               = "the-last-show" # Make sure to create this key pair in AWS Console
 
   tags = { Name = "K3s-FastAPI-Server" }
 }
@@ -39,15 +39,15 @@ resource "aws_security_group" "last_show_sg" {
   name = "last-show-sg"
 
   # Port 80 for the React Frontend
-  ingress { 
+  ingress {
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"] 
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   # Port 8000 for your FastAPI Backend
-  ingress { 
+  ingress {
     from_port   = 8000
     to_port     = 8000
     protocol    = "tcp"
@@ -70,11 +70,11 @@ resource "aws_security_group" "last_show_sg" {
     cidr_blocks = ["0.0.0.0/0"] # Replace with "YOUR_IP/32" for safety
   }
 
-  egress { 
+  egress {
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"] 
+    cidr_blocks = ["0.0.0.0/0"]
   }
 }
 
