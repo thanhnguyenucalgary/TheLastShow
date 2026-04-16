@@ -5,7 +5,7 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 import React, { useEffect, useState } from "react";
 
 const API_BASE_URL =
-  import.meta.env.VITE_API_BASE_URL || "http://35.183.24.39:30791";
+  import.meta.env.VITE_API_BASE_URL || "http://56.112.10.18:8000";
 
 function App() {
   const [user, setUser] = useState(null);
