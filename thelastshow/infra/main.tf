@@ -15,7 +15,7 @@ provider "aws" {
 }
 
 resource "aws_instance" "k3s_node" {
-  ami           = "ami-0280dd9806102a97b"
+  ami           = "ami-00d7b58842d67840a" # Amazon Linux 2 in ca-west-1, good for k3s
   instance_type = "t3.small"
 
   instance_market_options {
@@ -90,22 +90,10 @@ resource "aws_dynamodb_table" "obituaries" {
   }
 }
 
-# --- SECRETS (SSM PARAMETERS) ---
-# We create the "slots" for your keys here.
-resource "aws_ssm_parameter" "openai_key" {
-  name  = "/last-show/openai_api_key"
-  type  = "SecureString"
-  value = "PLACEHOLDER" # You will update this manually in the AWS Console
-
-  lifecycle {
-    ignore_changes = [value] # Prevents Terraform from overwriting your real key
-  }
-}
-
 resource "aws_ssm_parameter" "cloudinary_url" {
   name  = "/last-show/cloudinary_url"
   type  = "SecureString"
-  value = "PLACEHOLDER"
+  value = var.cloudinary_url
 
   lifecycle {
     ignore_changes = [value]
@@ -115,7 +103,7 @@ resource "aws_ssm_parameter" "cloudinary_url" {
 resource "aws_ssm_parameter" "google_api_key" {
   name  = "/last-show/google_api_key"
   type  = "SecureString"
-  value = "PLACEHOLDER"
+  value = var.google_api_key
 
   lifecycle {
     ignore_changes = [value]
